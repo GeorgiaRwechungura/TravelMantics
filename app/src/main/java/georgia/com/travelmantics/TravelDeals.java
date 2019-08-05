@@ -1,6 +1,8 @@
 package georgia.com.travelmantics;
 
-public class TravelDeals {
+import java.io.Serializable;
+
+public class TravelDeals implements Serializable {
     private String id;
     private  String tille;
     private  String description;

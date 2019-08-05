@@ -108,8 +108,9 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             int position = getAdapterPosition();
             Log.d("Click", String.valueOf(position));
             TravelDeals selectedDeal = deals.get(position);
+
            Intent intent = new Intent(view.getContext(), DealActivity.class);
-           intent.putExtra("Deal", (Parcelable) selectedDeal);
+           intent.putExtra("Deal", selectedDeal);
             view.getContext().startActivity(intent);
         }
     }

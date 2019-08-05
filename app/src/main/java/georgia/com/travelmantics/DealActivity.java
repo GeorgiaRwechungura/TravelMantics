@@ -1,6 +1,6 @@
 package georgia.com.travelmantics;
 
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,71 +13,89 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import georgia.com.travelmantics.FirebaseUtil;
+import georgia.com.travelmantics.ListActivity;
+import georgia.com.travelmantics.R;
+
 public class DealActivity extends AppCompatActivity {
-
     private FirebaseDatabase mFirebaseDatabase;
-    protected DatabaseReference mDatabaseReference;
+    private DatabaseReference mDatabaseReference;
     EditText txtTitle;
-    EditText txtdescription;
+    EditText txtDescription;
     EditText txtPrice;
-
+    TravelDeals deal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("traveldeals");
-
-        txtTitle=findViewById(R.id.txtTitle);
-        txtPrice =findViewById(R.id.txtPrice);
-        txtdescription=findViewById(R.id.txtDescription);
-
+        mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
+        mDatabaseReference = FirebaseUtil.mDatabaseReference;
+        txtTitle = (EditText) findViewById(R.id.txtTitle);
+        txtDescription = (EditText) findViewById(R.id.txtDescription);
+        txtPrice = (EditText) findViewById(R.id.txtPrice);
+        Intent intent = getIntent();
+        TravelDeals deal = (TravelDeals) intent.getSerializableExtra("Deal");
+        if (deal==null) {
+            deal = new TravelDeals();
+        }
+        this.deal = deal;
+        txtTitle.setText(deal.getTille());
+        txtDescription.setText(deal.getDescription());
+        txtPrice.setText(deal.getPrice());
     }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_menu:
+                saveDeal();
+                Toast.makeText(this, "Deal saved", Toast.LENGTH_LONG).show();
+                clean();
+                backToList();
+                return true;
+            case R.id.delete_menu:
+                deleteDeal();
+                Toast.makeText(this, "Deal Deleted", Toast.LENGTH_LONG).show();
+                backToList();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
 
-         switch (item.getItemId()){
-             case R.id.save_menu:
-                 saveDeal();
-                 Toast.makeText(getApplicationContext(),"Deal Saved",Toast.LENGTH_LONG).show();
-                 clean();
-                 return  true;
-
-                 default:
-                     return super.onOptionsItemSelected(item);
-
-         }
+        }
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.save_menu, menu);
+        return true;
+    }
+    private void saveDeal() {
+        deal.setTille(txtTitle.getText().toString());
+        deal.setDescription(txtDescription.getText().toString());
+        deal.setPrice(txtPrice.getText().toString());
+        if(deal.getId()==null) {
+            mDatabaseReference.push().setValue(deal);
+        }
+        else {
+            mDatabaseReference.child(deal.getId()).setValue(deal);
+        }
+    }
+    private void deleteDeal() {
+        if (deal == null) {
+            Toast.makeText(this, "Please save the deal before deleting", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mDatabaseReference.child(deal.getId()).removeValue();
 
+    }
+    private void backToList() {
+        Intent intent = new Intent(this, ListActivity.class);
+        startActivity(intent);
+    }
     private void clean() {
         txtTitle.setText("");
         txtPrice.setText("");
-        txtdescription.setText("");
+        txtDescription.setText("");
         txtTitle.requestFocus();
-    }
-
-    private void saveDeal() {
-
-        String tille= txtTitle.getText().toString();
-        String description=txtdescription.getText().toString();
-        String price=txtPrice.getText().toString();
-
-        TravelDeals travelDeals=new TravelDeals(tille,description,price, "");
-        mDatabaseReference.push().setValue(travelDeals);
-
-
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.save_menu,menu);
-        return true;
     }
 }
