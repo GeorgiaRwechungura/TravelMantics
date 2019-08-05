@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class  InsertActivity extends AppCompatActivity {
+public class DealActivity extends AppCompatActivity {
 
     private FirebaseDatabase mFirebaseDatabase;
     protected DatabaseReference mDatabaseReference;
@@ -30,7 +30,7 @@ public class  InsertActivity extends AppCompatActivity {
         mDatabaseReference = mFirebaseDatabase.getReference().child("traveldeals");
 
         txtTitle=findViewById(R.id.txtTitle);
-        txtPrice=findViewById(R.id.txtPrice);
+        txtPrice =findViewById(R.id.txtPrice);
         txtdescription=findViewById(R.id.txtDescription);
 
     }
