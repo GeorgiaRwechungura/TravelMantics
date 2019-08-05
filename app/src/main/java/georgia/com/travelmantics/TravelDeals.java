@@ -8,15 +8,28 @@ public class TravelDeals implements Serializable {
     private  String description;
     private  String price;
     private String ImageUrl;
+    private  String imageName;
 
-    public TravelDeals(){}
-
-    public TravelDeals( String tille, String description, String price,String imageUrl) {
+    public TravelDeals( String tille, String description, String price,String imageUrl,String imageanme) {
         this.setId(id);
         this.setTille(tille);
         this.setDescription(description);
         this.setPrice(price);
-        setImageUrl(imageUrl);
+        this.setImageUrl(imageUrl);
+        this.setImageName(imageanme);
+
+    }
+
+    public TravelDeals() {
+
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public String getId() {
