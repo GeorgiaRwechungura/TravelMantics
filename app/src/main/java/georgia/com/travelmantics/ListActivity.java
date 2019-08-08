@@ -37,8 +37,6 @@ public class ListActivity extends AppCompatActivity {
             insertMenu.setVisible(false);
         }
 
-
-
         return true;
     }
 

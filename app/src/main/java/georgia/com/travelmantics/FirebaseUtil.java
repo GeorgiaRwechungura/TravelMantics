@@ -52,9 +52,6 @@ public class FirebaseUtil {
                         String userId = firebaseAuth.getUid();
                         checkAdmin(userId);
                     }
-
-
-                   // firebaseUtil.signIn();
                    Toast.makeText(callerActivity.getBaseContext(), "Welcome back!", Toast.LENGTH_LONG).show();
                 }
             };
@@ -93,7 +90,7 @@ public class FirebaseUtil {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 FirebaseUtil.isAdmin=true;
-               // caller.showMenu();
+
             }
 
             @Override

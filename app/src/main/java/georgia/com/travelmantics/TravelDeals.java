@@ -10,6 +10,10 @@ public class TravelDeals implements Serializable {
     private String ImageUrl;
     private  String imageName;
 
+    public TravelDeals() {
+
+    }
+
     public TravelDeals( String tille, String description, String price,String imageUrl,String imageanme) {
         this.setId(id);
         this.setTille(tille);
@@ -20,9 +24,7 @@ public class TravelDeals implements Serializable {
 
     }
 
-    public TravelDeals() {
 
-    }
 
     public String getImageName() {
         return imageName;
